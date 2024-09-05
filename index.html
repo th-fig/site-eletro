@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cálculo</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        label {
+            display: block;
+            margin-top: 10px;
+        }
+        input, select {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        #enviar {
+            width: 100%;
+            padding: 10px;
+            background-color: #28a745;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            margin-top: 10px;
+            cursor: pointer;
+        }
+        #enviar.hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Cálculo Tomada & Iluminação</h1>
+        <form>
+            <label for="area">Área (m²):</label>
+            <input type="number" id="area" placeholder="Digite a área do cômodo" min="0" required>
+            <label for="perimetro">Perímetro (m):</label>
+            <input type="number" id="perimetro" placeholder="Digite o perímetro do cômodo" min="0" required>
+            <label for="tipo">Tipo de Área:</label>
+            <select id="tipo">
+                <option value="servico">Área de Serviço</option>
+                <option value="social">Área Social</option>
+            </select>
+            <input type="submit" value="Calcular" id="enviar">
+            
+        </form>
+        <div id="resposta"></div>
+    </div>
+
+    <script>
+        const frm = document.querySelector('form')
+
+        frm.addEventListener('submit', (e) => {
+            const area = frm.area.value;
+            const perimetro = frm.perimetro.value;
+            const tipo = frm.tipo.value;
+            let tomadas = 0;
+            let luz = 0;
+            let tomada600 = 0;
+            let tomada100 = 0;
+
+            // Cálculo lâmpada
+
+            luz = area <= 6 ? 100 : 100 + Math.floor((area - 6) / 4) * 60;
+
+            // Cálculo tomada
+            if (tipo == 'servico') {
+                tomadas = Math.ceil(perimetro / 3.5);
+                tomada600 = tomadas < 3? tomadas: 3;
+                tomada100 = tomadas - tomada600;
+            } else {
+                tomadas = Math.ceil(perimetro / 5);
+                tomada100 = tomadas;
+            }
+
+            resposta.innerHTML = `
+            <p>Lâmpadas: ${luz} VA</p>
+            <p>Quantidade de Tomadas: ${tomadas}</p>
+            <p>Tomadas 600VA: ${tomada600}</p>
+            <p>Tomadas 100VA: ${tomada100}</p>
+            `;
+            e.preventDefault()
+        })
+    </script>
+</body>
+</html>
