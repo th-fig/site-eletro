@@ -1,11 +1,34 @@
 const frm = document.querySelector('form')
+const modo = document.getElementById("modo");
+const camposDimensoes = document.getElementById("camposDimensoes");
+const camposArea = document.getElementById("camposArea");
 
-        frm.addEventListener('submit', (e) => {
-            const largura = frm.largura.value;
-            const comprimento = frm.comprimento.value;
-            const area = largura * comprimento;
-            const perimetro = largura * 2 + comprimento * 2;
-            const tipo = frm.tipo.value;
+modo.addEventListener("change", () => {
+    if (modo.value === "dimensoes") {
+        camposDimensoes.style.display = "block";
+        camposArea.style.display = "none";
+    } else {
+        camposDimensoes.style.display = "none";
+        camposArea.style.display = "block";
+    }
+});
+frm.addEventListener('submit', (e) => {
+
+    let area;
+    let perimetro;
+
+    if (modo.value === "dimensoes") {
+        const largura = Number(frm.largura.value);
+        const comprimento = Number(frm.comprimento.value);
+
+        area = largura * comprimento;
+        perimetro = 2 * largura + 2 * comprimento;
+    } else {
+        area = Number(frm.area.value);
+        perimetro = Number(frm.perimetro.value);
+    }
+
+    const tipo = frm.tipo.value;
             let tomadas = 0;
             let luz = 0;
             let tomada600 = 0;
